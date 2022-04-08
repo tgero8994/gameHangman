@@ -18,14 +18,26 @@ public class Hangman
       6. Repeat step 2 and 3 until the word is fully guessed and increment onto the unkown word for each new known letter
       7. If all letters are guessed correct reprint the final word and tell the user "You win"
       8. If all 6 body parts are built or the count gets to 6 the game ends and prints "You Lose"
+      
+      
+     -------------------------------------------------------------------------------THINGS TO ADD--------------------------------------------------------------------------------------------------
+      
+        > 1. IF THE WORD IS COMPLETLY SOLVED -> STOP THE LOOP AND PRINT THE AMOUNT OF GUESSES USED AND THEN FINAL WORD (LOOK AT NUMBER 6)
+          2. ADD A LETTER BANK OF THE LETTERS ALREADY GUESSED AND THE LETTERS STILL AVAILABLE TO GUESS (MAYBE USE AN ARRAY WITH ALL LETTERS AND REMOVE AFTER SELECTING)
+               ONLY ALLOW THE USER TO PICK FROM THAT ARRAY WHICH INCLUDES THE LETTERS LEFT TO GUESS
+          3. DONT ALLOW TO ENTER A VALUE ALREADY GUESSED
+        > 4. CONVERT THE USER INPUT TO LOWER CASE
+        > 5. STOP AND SAY YOU LOSE AFTER GETTING 6 INCORRECT LETTERS (HANGMAN CHARCTER PARTS)
+        > 6. WRITE IF STATEMENT THAT SAYS IF theWord INCLUDES NO '_' VALUES THEN THE WORD IS SOLVED
+          7. CHANGE UPPERBOUND TO CHANGE SIZE DEPENDING ON THE AMOUNT OF WORDS
+      
    */
    private static ArrayList<Character> theWord = new ArrayList<>();
-   private static char letterGuess;
-   private static char letterCycle;
-   private static String currentWord;
-   private static int incorrectGuesses = 0;
+   private static char letterGuess; // the users inputed guess
+   private static String currentWord;  // randomly picked word
+   private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
    private static final int TRIESGIVEN = 6;  // number of tries allowed before user loses
-   private static final int ALLOWEDGUESSES = 30;   // number of guesses allowed before the program just ends
+   private static final int ALLOWEDGUESSES = 30;   // number of guesses allowed before the program ends
    public static void main(String[] args)throws Exception
    {
       // generate a random number
@@ -58,22 +70,6 @@ public class Hangman
       }
       */
       
-      
-      
-      /** -------------------------------------------------------------------------------THINGS TO ADD--------------------------------------------------------------------------------------------------
-      
-        // 1. IF THE WORD IS COMPLETLY SOLVED -> STOP THE LOOP AND PRINT THE AMOUNT OF GUESSES USED AND THEN FINAL WORD (LOOK AT NUMBER 6)
-           2. ADD A LETTER BANK OF THE LETTERS ALREADY GUESSED AND THE LETTERS STILL AVAILABLE TO GUESS (MAYBE USE AN ARRAY WITH ALL LETTERS AND REMOVE AFTER SELECTING)
-               ONLY ALLOW THE USER TO PICK FROM THAT ARRAY WHICH INCLUDES THE LETTERS LEFT TO GUESS
-           3. DONT ALLOW TO ENTER A VALUE ALREADY GUESSED
-        // 4. CONVERT THE USER INPUT TO LOWER CASE
-        // 5. STOP AND SAY YOU LOSE AFTER GETTING 6 INCORRECT LETTERS (HANGMAN CHARCTER PARTS)
-        // 6. WRITE IF STATEMENT THAT SAYS IF theWord INCLUDES NO '_' VALUES THEN THE WORD IS SOLVED
-           7. CHANGE UPPERBOUND TO CHANGE SIZE DEPENDING ON THE AMOUNT OF WORDS
-      
-      */
-      
-      
       // -------------------------------------------------------------------------------MAIN-----------------------------------------------------------------------------------------------
       
       // READS WORDS FROM A TXT FILE
@@ -104,8 +100,8 @@ public class Hangman
          {
             letterGuess = Character.toLowerCase(letterGuess);
             letterPositionOf(currentWord);
-            incorrectGuesses();
-            win();
+            checkIfLetterIsNotInWord();
+            winDisplayMessage();
             System.out.println("Letters already guessed:\n");
             System.out.println("Letters left to guess:\n");
          }
@@ -122,7 +118,7 @@ public class Hangman
    
    // -------------------------------------------------------------------------------METHODS--------------------------------------------------------------------------------------------------
    /**
-      Determines if the char variable is a letter.
+      Determines if the user's char variable is a letter.
       @param c is the char being tested.
       @return false if the char is not a letter and true if only letters.
    */
@@ -215,12 +211,13 @@ public class Hangman
       Prints out the amount of incorrect guesses used out of 6.
       The program then ends when the user has entered 6 incorrect guesses.
    */
-   public static void incorrectGuesses()
-   {
-      
+   public static void checkIfLetterIsNotInWord()
+   {      
       CharSequence seq = new StringBuilder(1).append(letterGuess);
+      // checks if the char 'seq' which is also the letterGuessed is contained in the current word and increments the amount of incorrect guesses if the letter is not contained
       if (currentWord.contains(seq) == false)
          incorrectGuesses++;
+      // when the amount of incorrect guesses equals the number of tries the user was given the game ends and the user is displayed with a losing message
       if (incorrectGuesses == TRIESGIVEN)
       {
          System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);
@@ -232,7 +229,7 @@ public class Hangman
    /**
       Prints out a you win statement when all parts in the theWord arraylist don't equal '_' meaning all letters have been guessed.
    */
-   public static void win()
+   public static void winDisplayMessage()
    {
          if (currentWord.length() == 5 && theWord.get(0) != '_' && theWord.get(1) != '_' && theWord.get(2) != '_' && theWord.get(3) != '_' && theWord.get(4) != '_') // NEEDS TO BE CHANGED TO READ WORDS WITH ANY AMOUNT OF LETTERS
          {
@@ -240,4 +237,11 @@ public class Hangman
             System.exit(0);
          }
    }
+   
+   //add guessed letter to array list, check through the whole array list and see if the the letter guessed is in the array list
+   
+   // public static void checkIfLetterWasGuessed(char letterGuess)
+//    {
+//       
+//    }
 }
