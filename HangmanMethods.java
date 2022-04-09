@@ -7,24 +7,27 @@ import java.lang.*;
 public class HangmanMethods
 {
    public static ArrayList<Character> theWord = new ArrayList<>();
-   public static char letterGuess; // the users inputed guess
+   private static char letterGuess; // the users inputed guess
    private static String currentWord;  // randomly picked word
    private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
-   public static final int TRIESGIVEN = 6;  // number of tries allowed before user loses
-   public static final int ALLOWEDGUESSES = 30;   // number of guesses allowed before the program ends
+   private static final int TRIESGIVEN = 6;  // number of tries allowed before user loses
    
    // -------------------------------------------------------------------------------METHODS--------------------------------------------------------------------------------------------------
+   
+   public static void setLetterGuess(char a){
+      letterGuess = a;
+   }
    public static char getLetterGuess(){
       return letterGuess;
-   }
-   public static int getIncorrectGuesses(){
-      return incorrectGuesses;
    }
    public static void setCurrentWord(String i){
       currentWord = i;
    }
    public static String getCurrentWord(){
       return currentWord;
+   }
+   public static int getIncorrectGuesses(){
+      return incorrectGuesses;
    }
    /**
       Determines if the user's char variable is a letter.
@@ -130,7 +133,7 @@ public class HangmanMethods
       if (incorrectGuesses == TRIESGIVEN)
       {
          System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);
-         System.out.println("---------------------------------------------\nSorry you guessed incorrectly too mant times.\nThe correct word was: -------- " + currentWord.toUpperCase() + " --------");
+         System.out.println("---------------------------------------------\nSorry you guessed incorrectly too many times.\nThe correct word was: -------- " + currentWord.toUpperCase() + " --------");
          System.exit(0);
       }
       System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);

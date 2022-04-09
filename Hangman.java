@@ -86,13 +86,13 @@ public class Hangman extends HangmanMethods
       
       Scanner keyboard = new Scanner(System.in);
       
-      for (int i = 0; i<ALLOWEDGUESSES; i++)
+      for (int i = 0; i<30; i++)
       {
          System.out.println("\nGuess " + (i+1));
-         letterGuess = keyboard.next().charAt(0);
-         if(isALetter(letterGuess) == true)
+         setLetterGuess(keyboard.next().charAt(0));
+         if(isALetter(getLetterGuess()) == true)
          {
-            letterGuess = Character.toLowerCase(letterGuess);
+            setLetterGuess(Character.toLowerCase(getLetterGuess()));
             letterPositionOf(getCurrentWord());
             checkIfLetterIsNotInWord();
             winDisplayMessage();
