@@ -2,13 +2,12 @@ import java.util.ArrayList;
 import java.lang.*;
 public class HangmanMethods
 {
-   private static ArrayList<Character> theWord = new ArrayList<>();
-   private static ArrayList<Character> guessedLetters = new ArrayList<>(); // list of the letters the user already guessed
-   private static char letterGuess; // the users inputed guess
+   private static final ArrayList<Character> theWord = new ArrayList<>();
+   private static final ArrayList<Character> guessedLetters = new ArrayList<>(); // list of the letters the user already guessed
+   private static char letterGuess; // the user's inputted guess
    private static String currentWord;  // randomly picked word
    private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
    private static final int TRIESGIVEN = 6;  // number of tries allowed before user loses
-   private static int wordLength;   // equals the amount of letters in the random word
    
    // -------------------------------------------------------------------------------METHODS--------------------------------------------------------------------------------------------------
    public static ArrayList<Character> getGuessedLetters(){
@@ -27,8 +26,7 @@ public class HangmanMethods
       return currentWord;
    }
    public static int getWordLength(){
-      wordLength = getCurrentWord().length();
-      return wordLength;
+      return getCurrentWord().length();
    }
    /**
       Determines if the user's char variable is a letter.
@@ -49,15 +47,15 @@ public class HangmanMethods
       for(int i = 0; i < s.length(); i++)
       {
          theWord.add('_');
-      }System.out.println(theWord);
+      }
    }
    
    /**
-      Loops through each letter position of a word (that was passed as a char array) and determines if the enetered value is equal to that letter of the word,
+      Loops through each letter position of a word (that was passed as a char array) and determines if the entered value is equal to that letter of the word,
       If equal it then sets the setWordBlanks or '_' with that letter.
       @param s is a string that changes depending on if the letters guessed are correct.
    */
-   public static void letterPositionOf(String s)
+   public static void solver(String s)
    {
       for (int i = 0; i < s.length(); i++)
       {
@@ -117,51 +115,47 @@ public class HangmanMethods
        System.out.println(theWord);
    }
    /**
-      If the currentWord doesn't include a letter that was guessed the incorrectGuesses counter increases.
-      Prints out the amount of incorrect guesses used out of 6.
-      The program then ends when the user has entered 6 incorrect guesses.
+      Prints out a win statement when all parts in the theWord arraylist don't equal '_' meaning all letters have been guessed.
+      Prints out a loss statement if the user guesses incorrectly six or more times (equal to TRIESGIVEN)
    */
-   public static void loseDisplayMessage()
-   {      
-      CharSequence seq = new StringBuilder(1).append(letterGuess);
-      // checks if the char 'seq' which is also the letterGuessed is contained in the current word and increments the amount of incorrect guesses if the letter is not contained
-      if (!getCurrentWord().contains(seq))
-         incorrectGuesses++;
-      // when the amount of incorrect guesses equals the number of tries the user was given the game ends and the user is displayed with a losing message
-      if (incorrectGuesses == TRIESGIVEN)
-      {
-         System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);
-         System.out.println("---------------------------------------------\nSorry you guessed incorrectly too many times.\nThe correct word was: -------- " + getCurrentWord().toUpperCase() + " --------");
-         System.exit(0);
-      }
-      System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);
-   }
-   /**
-      Prints out a you win statement when all parts in the theWord arraylist don't equal '_' meaning all letters have been guessed.
-   */
-   public static void winDisplayMessage()
+   public static void winOrLoseMessage()
    {
-         if (getCurrentWord().length() == 5 && theWord.get(0) != '_' && theWord.get(1) != '_' && theWord.get(2) != '_' && theWord.get(3) != '_' && theWord.get(4) != '_') // NEEDS TO BE CHANGED TO READ WORDS WITH ANY AMOUNT OF LETTERS
+         if (getWordLength() == 5 && theWord.get(0) != '_' && theWord.get(1) != '_' && theWord.get(2) != '_' && theWord.get(3) != '_' && theWord.get(4) != '_') // NEEDS TO BE CHANGED TO READ WORDS WITH ANY AMOUNT OF LETTERS
          {
             System.out.println("YOU WIN");
             System.exit(0);
          }
+         else if(incorrectGuesses == TRIESGIVEN)
+         {
+            System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);
+            System.out.println("---------------------------------------------\nSorry you guessed incorrectly too many times.\nThe correct word was: -------- " + getCurrentWord().toUpperCase() + " --------");
+            System.exit(0);
+         }
+         System.out.println("Incorrect Guesses: " + incorrectGuesses + "/" + TRIESGIVEN);
+
    }
-   
-   // add guessed letter to array list, check through the whole array list and see if the the letter guessed is in the array list
    /**
-      If the guessed leter isn't already in the guessed letter list it adds it
+      Adds the guessedLetter to a list to display all already guessed letters
    */
-   public static boolean lettersAlreadyGuessedList()
+   public static void lettersAlreadyGuessedList()
    {
       if(!guessedLetters.contains(getLetterGuess())){
          guessedLetters.add(getLetterGuess());
-         return true;
       }
-      else{ // need to determine how to not increase incorrectGuesses correctly when the letter is guessed more than once
-         System.out.println("LETTER ALREADY GUESSED TRY AGAIN!");
-         incorrectGuesses--;
-         return false;
+      else{
+         System.out.println("LETTER ALREADY GUESSED: TRY AGAIN!");
+      }
+   }
+   /**
+      Adds an incorrectGuess for only the first time an incorrect letter is guessed
+   */
+   public static void incorrectGuessIncrements()
+   {
+      CharSequence seq = new StringBuilder(1).append(letterGuess);
+      if(!getCurrentWord().contains(seq)){
+         incorrectGuesses++;
+         if(guessedLetters.contains(getLetterGuess()))
+            incorrectGuesses--;
       }
    }
 }

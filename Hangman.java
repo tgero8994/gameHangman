@@ -85,26 +85,20 @@ public class Hangman extends HangmanMethods
       
       Scanner keyboard = new Scanner(System.in);
       
-      for (int i = 0; i<30; i++)
-      {
+      for (int i = 0; i<30; i++){
          System.out.println("\nGuess " + (i+1));
          setLetterGuess(keyboard.next().charAt(0));
-         if(isALetter(getLetterGuess()))
-         {
-            setLetterGuess(Character.toLowerCase(getLetterGuess()));
-            letterPositionOf(getCurrentWord());
-            loseDisplayMessage();
-            winDisplayMessage();
-            lettersAlreadyGuessedList();
+         if(isALetter(getLetterGuess())){
+            setLetterGuess(Character.toLowerCase(getLetterGuess())); // sets the letter guessed to lowercase so it works with solver()
+            solver(getCurrentWord()); // prints out the word with each newly guessed letter
+            incorrectGuessIncrements();   // increases each time the user incorrectly guesses and only increases the first time the letter is guessed
+            winOrLoseMessage();  //displays if the user won or lose
+            lettersAlreadyGuessedList();  // displays the list of letters already guessed in an array
             System.out.println("Letters already guessed:\n" + getGuessedLetters() + "\n---------------------------------------------------------");
          }
          else{
             System.out.println("---ERROR: ENTER A LETTER---");
          }
-         
       }
-      
    }
-   
-   
 }
