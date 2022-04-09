@@ -26,9 +26,6 @@ public class HangmanMethods
    public static String getCurrentWord(){
       return currentWord;
    }
-   public static int getIncorrectGuesses(){
-      return incorrectGuesses;
-   }
    /**
       Determines if the user's char variable is a letter.
       @param c is the char being tested.
