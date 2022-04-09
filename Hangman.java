@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.io.*;
 import java.util.Random;
-import java.net.URL;
 import java.util.ArrayList;
 import java.lang.*;
 public class Hangman extends HangmanMethods
@@ -90,22 +89,18 @@ public class Hangman extends HangmanMethods
       {
          System.out.println("\nGuess " + (i+1));
          setLetterGuess(keyboard.next().charAt(0));
-         if(isALetter(getLetterGuess()) == true)
+         if(isALetter(getLetterGuess()))
          {
             setLetterGuess(Character.toLowerCase(getLetterGuess()));
             letterPositionOf(getCurrentWord());
             checkIfLetterIsNotInWord();
             winDisplayMessage();
-            System.out.println("Letters already guessed:\n");
-            System.out.println("Letters left to guess:\n");
          }
-         else
-         {
+         else{
             System.out.println("---ERROR: ENTER A LETTER---");
-            System.out.println("Letters already guessed:\n");
-            System.out.println("Letters left to guess:\n");
          }
-       
+         System.out.println("Letters already guessed:\n");
+         System.out.println("Letters left to guess:\n");
       }
       
    }

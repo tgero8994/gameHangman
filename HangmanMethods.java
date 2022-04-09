@@ -1,7 +1,3 @@
-import java.util.Scanner;
-import java.io.*;
-import java.util.Random;
-import java.net.URL;
 import java.util.ArrayList;
 import java.lang.*;
 public class HangmanMethods
@@ -34,10 +30,7 @@ public class HangmanMethods
    public static boolean isALetter(char c)
    {
       // char guess = c.toUpperCase();
-      if (!(c >= 'A' && c <= 'Z') && !(c >= 'a' && c <= 'z'))
-         return false;
-      else
-         return true;
+      return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
    }
    /**
       Makes a character array list with '_' for the length of the s
