@@ -78,7 +78,7 @@ public class Hangman extends HangmanMethods
       // uses the random int generator to select a word from the list
       setCurrentWord(wordList.get(int_rand));
       System.out.println("Your Word is: " + getCurrentWord());
-      System.out.println("Letter Count: " + getCurrentWord().length());
+      System.out.println("Number of Letters: " + getWordLength());
       setWordBlanks(getCurrentWord());
       
       
@@ -93,14 +93,15 @@ public class Hangman extends HangmanMethods
          {
             setLetterGuess(Character.toLowerCase(getLetterGuess()));
             letterPositionOf(getCurrentWord());
-            checkIfLetterIsNotInWord();
+            loseDisplayMessage();
             winDisplayMessage();
+            lettersAlreadyGuessedList();
+            System.out.println("Letters already guessed:\n" + getGuessedLetters() + "\n---------------------------------------------------------");
          }
          else{
             System.out.println("---ERROR: ENTER A LETTER---");
          }
-         System.out.println("Letters already guessed:\n");
-         System.out.println("Letters left to guess:\n");
+         
       }
       
    }
