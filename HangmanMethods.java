@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.lang.*;
-public class HangmanMethods
+public class HangmanMethods extends Application implements Initializable
 {
    private static final ArrayList<Character> theWord = new ArrayList<>();
    private static final ArrayList<Character> guessedLetters = new ArrayList<>(); // list of the letters the user already guessed
@@ -27,6 +27,25 @@ public class HangmanMethods
    }
    public static int getWordLength(){
       return getCurrentWord().length();
+   }
+   
+   @Override
+   public void start(Stage stage)
+   {
+      try{
+      Parent root = FXMLLoader.load(getClass().getResource("OpeningScene.fxml"));
+      Scene scene = new Scene(root);
+      stage.setTitle("Hangman Game");
+      
+      stage.setScene(scene);
+      stage.show();
+      } catch(Exception e){}
+   }
+   
+   @Override
+   public void stop()
+   {
+      System.out.println("END");
    }
    /**
       Determines if the user's char variable is a letter.
