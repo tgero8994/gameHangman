@@ -3,14 +3,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.image.ImageView;
 
-public class PleaseProvideControllerClassName {
+public class OpeningSceneController {
 
     @FXML
     private ImageView beachPicture;
 
     @FXML
     private Button play;
-
+    
     @FXML
     private RadioButton setting1;
 
@@ -20,4 +20,8 @@ public class PleaseProvideControllerClassName {
     @FXML
     private ImageView westernPicture;
 
+    @FXML
+    void playButton(ActionEvent event) {
+
+    }
 }

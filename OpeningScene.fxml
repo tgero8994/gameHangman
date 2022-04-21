@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="OpeningSceneController">
    <children>
       <ImageView fx:id="beachPicture" fitHeight="409.0" fitWidth="607.0" layoutX="-3.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -25,9 +25,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <RadioButton fx:id="setting1" layoutX="267.0" layoutY="170.0" mnemonicParsing="false" selected="true" style="-fx-background-color: white;" text="Beach" />
-      <RadioButton fx:id="setting2" layoutX="261.0" layoutY="211.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Western" />
-      <Button fx:id="play" layoutX="232.0" layoutY="310.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="141.0" text="Let's play!">
+      <RadioButton fx:id="beachSetting" layoutX="267.0" layoutY="170.0" mnemonicParsing="false" selected="true" style="-fx-background-color: white;" text="Beach" />
+      <RadioButton fx:id="westernSetting" layoutX="261.0" layoutY="211.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Western" />
+      <Button fx:id="play" layoutX="232.0" layoutY="310.0" mnemonicParsing="false" onAction="#playButton" prefHeight="51.0" prefWidth="141.0" text="Let's play!">
          <font>
             <Font size="22.0" />
          </font>
