@@ -115,7 +115,7 @@
          </font>
       </Label>
       <TextField fx:id="letterGuessBox" layoutX="340.0" layoutY="134.0" promptText="Guess letter here" />
-      <Button fx:id="checkLetter" layoutX="534.0" layoutY="134.0" mnemonicParsing="false" onAction="#checkLetterButton" text="Enter" />
+      <Button fx:id="checkLetter" defaultButton="true" layoutX="534.0" layoutY="134.0" mnemonicParsing="false" onAction="#checkLetterButton" text="Enter" />
       <Button fx:id="home" layoutX="530.0" layoutY="352.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="50.0" style="-fx-background-color: clear;">
          <graphic>
             <ImageView fitHeight="34.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">

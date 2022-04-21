@@ -11,7 +11,7 @@ import java.lang.*;
 public class BeachSceneController {
     
     private static final ArrayList<Character> theWord = new ArrayList<>();
-    private static final ArrayList<Character> guessedLetters = new ArrayList<>(); // list of the letters the user already guessed
+    private static final ArrayList<Character> guessedLettersArray = new ArrayList<>(); // list of the letters the user already guessed
     private static char letterGuess; // the user's inputted guess
     private static String currentWord;  // randomly picked word
     private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
@@ -70,16 +70,15 @@ public class BeachSceneController {
     
     @FXML
     void checkLetterButton(ActionEvent event) {
-      // places uppercase letter guess into an array and then prints the array as a String into the letters already guessed box
-      if(isALetter(letterGuessBox.getText().charAt(0))){
-         char gds = letterGuessBox.getText().charAt(0);
-         String cnd = Character.toString(gds).toUpperCase();
-         if(!guessedLetters.contains(gds)){
-            guessedLetters.add(gds);
+      // checks if the first letter in the guess letter text box is a valid letter and then places an uppercase value into the guessedLettersArray if that letter isn't already there
+      char firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
+      if(isALetter(firstLetterInGuess))
+      {
+         if(!guessedLettersArray.contains(firstLetterInGuess)){
+            guessedLettersArray.add(firstLetterInGuess);
          }
-         String snc = guessedLetters.toString();
-         
-         lettersGuessedList.setText(snc);
+         String list = guessedLettersArray.toString().toUpperCase();
+         lettersGuessedList.setText(list);
       }
     }
 
