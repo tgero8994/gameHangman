@@ -59,7 +59,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="beachHead" fitHeight="46.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="beachHead" fitHeight="46.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@Images/beachHead.png" />
                </image>
@@ -67,7 +67,7 @@
                   <Insets left="76.0" top="19.5" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fx:id="beachLeftArm" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+            <ImageView fx:id="beachLeftArm" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="1">
                <image>
                   <Image url="@Images/beachLeftArm.png" />
                </image>
@@ -75,7 +75,7 @@
                   <Insets bottom="74.0" left="42.0" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fx:id="beachRightArm" fitHeight="22.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+            <ImageView fx:id="beachRightArm" fitHeight="22.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                <image>
                   <Image url="@Images/beachRightArm.png" />
                </image>
@@ -83,7 +83,7 @@
                   <Insets bottom="93.0" left="42.0" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fx:id="beachBody" fitHeight="36.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ImageView fx:id="beachBody" fitHeight="36.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <image>
                   <Image url="@Images/beachBody.png" />
                </image>
@@ -91,7 +91,7 @@
                   <Insets bottom="79.0" left="2.5" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fx:id="beachLeftLeg" fitHeight="71.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+            <ImageView fx:id="beachLeftLeg" fitHeight="71.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="2">
                <image>
                   <Image url="@Images/beachLeftLeg.png" />
                </image>
@@ -99,7 +99,7 @@
                   <Insets bottom="153.0" left="20.0" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fx:id="beachRightLeg" fitHeight="69.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <ImageView fx:id="beachRightLeg" fitHeight="69.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <image>
                   <Image url="@Images/beachRightLeg.png" />
                </image>
