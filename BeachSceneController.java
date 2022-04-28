@@ -1,3 +1,10 @@
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+import com.google.gson.Gson;
+
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -10,63 +17,64 @@ import java.lang.*;
 
 public class BeachSceneController {
     
-    private static final ArrayList<Character> guessedLettersArray = new ArrayList<>(); // list of the letters the user already guessed
-    private static char firstLetterInGuess; // the user's inputted guess
-    private static String currentWord = "hello";  // randomly picked word
-    private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
-
-    @FXML
+   private static final ArrayList<Character> guessedLettersArray = new ArrayList<>(); // list of the letters the user already guessed
+   private static char firstLetterInGuess; // the user's inputted guess
+   private static String currentWord = "horse";  // randomly picked word
+   private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
+   private static int correctGuesses = 0;
+    
+   @FXML
     private ImageView beachBody;
 
-    @FXML
+   @FXML
     private ImageView beachHead;
 
-    @FXML
+   @FXML
     private ImageView beachLeftArm;
 
-    @FXML
+   @FXML
     private ImageView beachLeftLeg;
 
-    @FXML
+   @FXML
     private ImageView beachPicture;
 
-    @FXML
+   @FXML
     private ImageView beachRightArm;
 
-    @FXML
+   @FXML
     private ImageView beachRightLeg;
 
-    @FXML
+   @FXML
     private Button checkLetter;
 
-    @FXML
+   @FXML
     private Button home;
 
-    @FXML
+   @FXML
     private TextField letter1;
 
-    @FXML
+   @FXML
     private TextField letter2;
 
-    @FXML
+   @FXML
     private TextField letter3;
 
-    @FXML
+   @FXML
     private TextField letter4;
 
-    @FXML
+   @FXML
     private TextField letter5;
 
-    @FXML
+   @FXML
     private TextField letterGuessBox;
 
-    @FXML
+   @FXML
     private TextArea lettersGuessedList;
 
-    @FXML
+   @FXML
     private Button resetWord;
     
-    @FXML
+   @FXML
     void checkLetterButton(ActionEvent event) {
       // checks if the first letter in the guess letter text box is a valid letter and then places an uppercase value into the guessedLettersArray if that letter isn't already there
       firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
@@ -74,13 +82,17 @@ public class BeachSceneController {
       {
          isTheLetterGuessCorrect();
          buildHangmanCharcter();
+         
       }
-    }
+      winOrLoseMessage();
+      letterGuessBox.clear();
+   }
 
-    @FXML
+   @FXML
     void resetWordButton(ActionEvent event) {
-      
-    }
+      updateWord();
+      resetGame();
+   }
     
     /**
       Determines if the user's char variable is a letter.
@@ -96,11 +108,11 @@ public class BeachSceneController {
    public void addLettersToListOfAlreadyGuessed()
    {
       // Adds letters to guess box
-         if(!guessedLettersArray.contains(firstLetterInGuess)){
-            guessedLettersArray.add(firstLetterInGuess);
-         }
-         String list = guessedLettersArray.toString().toUpperCase();
-         lettersGuessedList.setText(list);
+      if(!guessedLettersArray.contains(firstLetterInGuess)){
+         guessedLettersArray.add(firstLetterInGuess);
+      }
+      String list = guessedLettersArray.toString().toUpperCase();
+      lettersGuessedList.setText(list);
    }
    
    // if word contains letter guessed fill it in aproprate letter box
@@ -113,16 +125,109 @@ public class BeachSceneController {
       if(!currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess))
       {
          incorrectGuesses++;
-         System.out.println("Letter Not in word " + incorrectGuesses);
+         System.out.println("Letter Not in word add incorrect guess " +"INCORRECT: " + incorrectGuesses +"CORRECT: " + correctGuesses);
       }
       // letter in word
       else if(currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess)){
-         System.out.println("Letter in word " + incorrectGuesses);
+         System.out.println("Letter in word (add letter guessed to the text field letter1)" +"INCORRECT: " + incorrectGuesses +"CORRECT: " + correctGuesses);
+         correctGuesses++;
+         String myLetter = Character.toString(firstLetterInGuess);
+         
+         if(currentWord.charAt(0) == firstLetterInGuess)
+            letter1.setText(myLetter.toUpperCase());
+         if(currentWord.charAt(1) == firstLetterInGuess)
+            letter2.setText(myLetter.toUpperCase());
+         if(currentWord.charAt(2) == firstLetterInGuess)
+            letter3.setText(myLetter.toUpperCase());
+         if(currentWord.charAt(3) == firstLetterInGuess)
+            letter4.setText(myLetter.toUpperCase());
+         if(currentWord.charAt(4) == firstLetterInGuess)
+            letter5.setText(myLetter.toUpperCase());
       }
       // letter already guessed
       else
-         System.out.println("Letter Already Guessed " + incorrectGuesses);
+         System.out.println("Letter Already Guessed Try Again" +"INCORRECT: " + incorrectGuesses +"CORRECT: " + correctGuesses);
       addLettersToListOfAlreadyGuessed();
+   }
+   
+   /**
+      Prints out a win statement when all parts in the theWord arraylist don't equal '_' meaning all letters have been guessed.
+      Prints out a loss statement if the user guesses incorrectly six or more times (equal to TRIESGIVEN)
+   */
+   public void winOrLoseMessage()
+   {
+      if(incorrectGuesses == 6)
+      {
+         letter1.setStyle("-fx-background-color: lightcoral;");
+         letter2.setStyle("-fx-background-color: lightcoral;");
+         letter3.setStyle("-fx-background-color: lightcoral;");
+         letter4.setStyle("-fx-background-color: lightcoral;");
+         letter5.setStyle("-fx-background-color: lightcoral;");
+         checkLetter.setDisable(true);
+         letterGuessBox.setDisable(true);
+      }
+      if(correctGuesses == 5)
+      {
+         letter1.setStyle("-fx-background-color: lightgreen;");
+         letter2.setStyle("-fx-background-color: lightgreen;");
+         letter3.setStyle("-fx-background-color: lightgreen;");
+         letter4.setStyle("-fx-background-color: lightgreen;");
+         letter5.setStyle("-fx-background-color: lightgreen;");
+         checkLetter.setDisable(true);
+         letterGuessBox.setDisable(true);
+      }
+   }
+   
+   public void updateWord(){
+      System.out.println("LOADING... Please Wait.");
+      try{
+         HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://random-word-api.herokuapp.com/word?length=5"))
+            .method("GET", HttpRequest.BodyPublishers.noBody())
+            .build();
+         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+         String data = response.body();
+      
+         
+                    
+         Gson gson = new Gson();
+         String[] word = gson.fromJson(data, String[].class);
+      
+         RandomWord randomWord = new RandomWord(word);
+         currentWord = randomWord.getWord();
+      }catch(Exception e){}
+      System.out.println(currentWord);
+   }
+   
+   public void resetGame(){
+      // reset letter boxes
+      letter1.clear();
+      letter2.clear();
+      letter3.clear();
+      letter4.clear();
+      letter5.clear();
+      // reset list of already guessed letters
+      guessedLettersArray.clear();
+      lettersGuessedList.clear();
+      // reset person
+      beachHead.setVisible(false);
+      beachBody.setVisible(false);
+      beachLeftArm.setVisible(false);
+      beachRightArm.setVisible(false);
+      beachLeftLeg.setVisible(false);
+      beachRightLeg.setVisible(false);
+      // reset background colors to white
+      letter1.setStyle("-fx-background-color: white;");
+      letter2.setStyle("-fx-background-color: white;");
+      letter3.setStyle("-fx-background-color: white;");
+      letter4.setStyle("-fx-background-color: white;");
+      letter5.setStyle("-fx-background-color: white;");
+      // reset correct and incorrect variables
+      incorrectGuesses = 0;
+      correctGuesses = 0;
+      // re-enable access to guessing box
+      checkLetter.setDisable(false);
+      letterGuessBox.setDisable(false);
    }
    
    public void buildHangmanCharcter()
