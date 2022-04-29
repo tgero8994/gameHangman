@@ -29,8 +29,8 @@ public class HangmanGameMain extends Application
       stage.setScene(scene);
       stage.show();
       } catch (Exception e){
-      System.out.println(e.getMessage());
-      e.printStackTrace();
+      // System.out.println(e.getMessage());
+      // e.printStackTrace();
       }
       // All of the code that interacts with the API and the Scene 
       //   is found in FXMLTempAppController.java

@@ -4,12 +4,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import com.google.gson.Gson;
-
+// Scene Builder
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -22,7 +24,10 @@ public class BeachSceneController {
    private static String currentWord;  // randomly picked word
    private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
    private static int correctGuesses = 0;
-    
+   
+   @FXML
+    private ToggleGroup backgroundGroup;
+     
    @FXML
     private ImageView beachBody;
 
@@ -36,14 +41,23 @@ public class BeachSceneController {
     private ImageView beachLeftLeg;
 
    @FXML
-    private ImageView beachPicture;
-
-   @FXML
     private ImageView beachRightArm;
 
    @FXML
     private ImageView beachRightLeg;
-
+    
+   @FXML
+    private ImageView sunnyBeachPicture;
+    
+   @FXML
+    private ImageView sunsetBeachPicture;
+    
+   @FXML
+    private RadioButton sunnyBeachRadio;
+    
+   @FXML
+    private RadioButton sunsetBeachRadio;
+    
    @FXML
     private Button checkLetter;
 
@@ -74,19 +88,30 @@ public class BeachSceneController {
    @FXML
     private Button resetWord;
     
+    // Changes the background determined but what radio button was pressed
+   @FXML
+    void changeBackground(ActionEvent event) {
+      if(event.getSource() == sunsetBeachRadio){
+         sunsetBeachPicture.setVisible(true);
+      }
+      if(event.getSource() == sunnyBeachRadio){
+         sunsetBeachPicture.setVisible(false);
+      }
+    }
+    
    @FXML
     void checkLetterButton(ActionEvent event) {
       // checks if the first letter in the guess letter text box is a valid letter and then places an uppercase value into the guessedLettersArray if that letter isn't already there
       firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
       
-         if(isALetter(firstLetterInGuess))
-         {
-            isTheLetterGuessCorrect();
-            amountOfCorrect(currentWord, firstLetterInGuess);
-            buildHangmanCharcter();
-         }
-         else
-            System.out.println("Enter a letter!");
+      if(isALetter(firstLetterInGuess))
+      {
+         isTheLetterGuessCorrect();
+         amountOfCorrect(currentWord, firstLetterInGuess);
+         buildHangmanCharcter();
+      }
+      else
+         System.out.println("Enter a letter!");
       System.out.println("INCORRECT: " + incorrectGuesses +" CORRECT: " + correctGuesses);
       winOrLoseMessage();
       letterGuessBox.clear();
@@ -251,15 +276,15 @@ public class BeachSceneController {
    }
    // does this method before the main method is started 
    public void initialize() { 
-      updateWord();
+      //updateWord();
       // CODE SHOULD NOT ALLOW THE TEXTFIELD TO BE ENTERED IF NOTHING INSIDE
-//       if(!letterGuessBox.getText().isEmpty()) 
-//       {
-//          // disable button to be pressed
-//          checkLetter.setDisable(true);
-//       }
-//       else // enable button
-//          checkLetter.setDisable(false);
+   //       if(!letterGuessBox.getText().isEmpty()) 
+   //       {
+   //          // disable button to be pressed
+   //          checkLetter.setDisable(true);
+   //       }
+   //       else // enable button
+   //          checkLetter.setDisable(false);
    }
    
    public void amountOfCorrect(String s, char c) {

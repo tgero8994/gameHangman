@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,33 +17,38 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BeachSceneController">
    <children>
-      <ImageView fx:id="beachPicture" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="sunnyBeachPicture" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/beachPicture.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="sunsetBeachPicture" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" visible="false">
+         <image>
+            <Image url="@Images/sunsetBeach.jpg" />
+         </image>
+      </ImageView>
       <Button fx:id="resetWord" layoutX="214.0" layoutY="352.0" mnemonicParsing="false" onAction="#resetWordButton" prefHeight="25.0" prefWidth="137.0" text="Reset Word" />
-      <TextField fx:id="letter1" editable="false" layoutX="341.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter1" alignment="CENTER" editable="false" layoutX="341.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter2" editable="false" layoutX="388.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter2" alignment="CENTER" editable="false" layoutX="388.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter3" editable="false" layoutX="435.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter3" alignment="CENTER" editable="false" layoutX="435.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter4" editable="false" layoutX="482.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter4" alignment="CENTER" editable="false" layoutX="482.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter5" editable="false" layoutX="529.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter5" alignment="CENTER" editable="false" layoutX="529.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -117,7 +123,7 @@
       </Label>
       <TextField fx:id="letterGuessBox" layoutX="340.0" layoutY="134.0" promptText="Guess letter here" />
       <Button fx:id="checkLetter" defaultButton="true" layoutX="534.0" layoutY="134.0" mnemonicParsing="false" onAction="#checkLetterButton" text="Enter" />
-      <Button fx:id="home" layoutX="530.0" layoutY="352.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="50.0" style="-fx-background-color: clear;">
+      <Button fx:id="home" layoutX="543.0" layoutY="351.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="50.0" style="-fx-background-color: clear;">
          <graphic>
             <ImageView fitHeight="34.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -126,6 +132,10 @@
             </ImageView>
          </graphic>
       </Button>
-      <RadioButton fx:id="beachSetting" layoutX="365.0" layoutY="362.0" mnemonicParsing="false" style="-fx-background-color: clear;" text="Toggle Beach Background" />
+      <RadioButton fx:id="sunnyBeachRadio" layoutX="379.0" layoutY="344.0" mnemonicParsing="false" onAction="#changeBackground" selected="true" style="-fx-background-color: clear;" text="Sunny Beach">
+         <toggleGroup>
+            <ToggleGroup fx:id="backgroundGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="sunsetBeachRadio" layoutX="377.0" layoutY="369.0" mnemonicParsing="false" onAction="#changeBackground" style="-fx-background-color: clear;" text="Sunset Beach" toggleGroup="$backgroundGroup" />
    </children>
 </AnchorPane>
