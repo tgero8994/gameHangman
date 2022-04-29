@@ -19,7 +19,7 @@ public class BeachSceneController {
     
    private static final ArrayList<Character> guessedLettersArray = new ArrayList<>(); // list of the letters the user already guessed
    private static char firstLetterInGuess; // the user's inputted guess
-   private static String currentWord = "horse";  // randomly picked word
+   private static String currentWord;  // randomly picked word
    private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
    private static int correctGuesses = 0;
     
@@ -78,12 +78,16 @@ public class BeachSceneController {
     void checkLetterButton(ActionEvent event) {
       // checks if the first letter in the guess letter text box is a valid letter and then places an uppercase value into the guessedLettersArray if that letter isn't already there
       firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
-      if(isALetter(firstLetterInGuess))
-      {
-         isTheLetterGuessCorrect();
-         buildHangmanCharcter();
-         
-      }
+      
+         if(isALetter(firstLetterInGuess))
+         {
+            isTheLetterGuessCorrect();
+            amountOfCorrect(currentWord, firstLetterInGuess);
+            buildHangmanCharcter();
+         }
+         else
+            System.out.println("Enter a letter!");
+      System.out.println("INCORRECT: " + incorrectGuesses +" CORRECT: " + correctGuesses);
       winOrLoseMessage();
       letterGuessBox.clear();
    }
@@ -105,7 +109,7 @@ public class BeachSceneController {
       return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
    }
    
-   public void addLettersToListOfAlreadyGuessed()
+   public void addLetterToListOfAlreadyGuessed()
    {
       // Adds letters to guess box
       if(!guessedLettersArray.contains(firstLetterInGuess)){
@@ -121,16 +125,14 @@ public class BeachSceneController {
    public void isTheLetterGuessCorrect()
    {
       String shc = guessedLettersArray.toString();
-      // letter not in word and not in list +1
+      // letter not in word and not in already guessed list so add 1 to incorrectGuesses
       if(!currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess))
       {
          incorrectGuesses++;
-         System.out.println("Letter Not in word add incorrect guess " +"INCORRECT: " + incorrectGuesses +"CORRECT: " + correctGuesses);
       }
-      // letter in word
-      else if(currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess)){
-         System.out.println("Letter in word (add letter guessed to the text field letter1)" +"INCORRECT: " + incorrectGuesses +"CORRECT: " + correctGuesses);
-         correctGuesses++;
+      // letter in word, fills in textfield where the correct letter is located in the word
+      else if(currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess))
+      {
          String myLetter = Character.toString(firstLetterInGuess);
          
          if(currentWord.charAt(0) == firstLetterInGuess)
@@ -146,8 +148,9 @@ public class BeachSceneController {
       }
       // letter already guessed
       else
-         System.out.println("Letter Already Guessed Try Again" +"INCORRECT: " + incorrectGuesses +"CORRECT: " + correctGuesses);
-      addLettersToListOfAlreadyGuessed();
+         System.out.println("Letter Already Guessed Try Again");
+         
+      addLetterToListOfAlreadyGuessed();
    }
    
    /**
@@ -166,7 +169,7 @@ public class BeachSceneController {
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
       }
-      if(correctGuesses == 5)
+      if(correctGuesses == currentWord.length())
       {
          letter1.setStyle("-fx-background-color: lightgreen;");
          letter2.setStyle("-fx-background-color: lightgreen;");
@@ -246,4 +249,26 @@ public class BeachSceneController {
          beachRightLeg.setVisible(true);
       
    }
+   // does this method before the main method is started 
+   public void initialize() { 
+      updateWord();
+      // CODE SHOULD NOT ALLOW THE TEXTFIELD TO BE ENTERED IF NOTHING INSIDE
+//       if(!letterGuessBox.getText().isEmpty()) 
+//       {
+//          // disable button to be pressed
+//          checkLetter.setDisable(true);
+//       }
+//       else // enable button
+//          checkLetter.setDisable(false);
+   }
+   
+   public void amountOfCorrect(String s, char c) {
+      //initialize count array index  
+      for (int i = 0; i < s.length(); i++){
+         if(s.charAt(i) == c)
+            correctGuesses++;
+      }
+   }
+   
+   
 }
