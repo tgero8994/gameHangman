@@ -22,38 +22,38 @@
             <Image url="@Images/beachPicture.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="sunsetBeachPicture" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" visible="false">
+      <ImageView fx:id="westernPicture" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" visible="false">
          <image>
-            <Image url="@Images/sunsetBeach.jpg" />
+            <Image url="@Images/westernPicture.png" />
          </image>
       </ImageView>
       <Button fx:id="resetWord" layoutX="214.0" layoutY="352.0" mnemonicParsing="false" onAction="#resetWordButton" prefHeight="25.0" prefWidth="137.0" text="Reset Word" />
-      <TextField fx:id="letter1" alignment="CENTER" editable="false" layoutX="341.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter1" alignment="CENTER" editable="false" layoutX="314.0" layoutY="71.0" prefHeight="57.0" prefWidth="55.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter2" alignment="CENTER" editable="false" layoutX="388.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter2" alignment="CENTER" editable="false" layoutX="369.0" layoutY="71.0" prefHeight="57.0" prefWidth="55.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter3" alignment="CENTER" editable="false" layoutX="435.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter3" alignment="CENTER" editable="false" layoutX="424.0" layoutY="71.0" prefHeight="57.0" prefWidth="55.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter4" alignment="CENTER" editable="false" layoutX="482.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextField fx:id="letter4" alignment="CENTER" editable="false" layoutX="479.0" layoutY="71.0" prefHeight="57.0" prefWidth="55.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextField fx:id="letter5" alignment="CENTER" editable="false" layoutX="529.0" layoutY="71.0" prefHeight="38.0" prefWidth="47.0">
+      <TextArea fx:id="lettersGuessedList" editable="false" layoutX="336.0" layoutY="228.0" prefHeight="104.0" prefWidth="235.0" />
+      <TextField fx:id="letter5" alignment="CENTER" editable="false" layoutX="534.0" layoutY="71.0" prefHeight="57.0" prefWidth="55.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </TextField>
-      <TextArea fx:id="lettersGuessedList" editable="false" layoutX="340.0" layoutY="228.0" prefHeight="104.0" prefWidth="235.0" />
       <GridPane layoutX="71.0" layoutY="118.0" prefHeight="259.0" prefWidth="196.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -74,6 +74,14 @@
                   <Insets left="76.0" top="19.5" />
                </GridPane.margin>
             </ImageView>
+            <ImageView fx:id="cowboyHead" fitHeight="64.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@Images/cowboyHead.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="15.5" top="42.5" />
+               </GridPane.margin>
+            </ImageView>
             <ImageView fx:id="beachLeftArm" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="1">
                <image>
                   <Image url="@Images/beachLeftArm.png" />
@@ -82,12 +90,28 @@
                   <Insets bottom="74.0" left="42.0" />
                </GridPane.margin>
             </ImageView>
+            <ImageView fx:id="cowboyLeftArm" fitHeight="88.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@Images/cowboyLeftArm.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="4.0" top="7.0" />
+               </GridPane.margin>
+            </ImageView>
             <ImageView fx:id="beachRightArm" fitHeight="22.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                <image>
                   <Image url="@Images/beachRightArm.png" />
                </image>
                <GridPane.margin>
                   <Insets bottom="93.0" left="42.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="cowboyRightArm" fitHeight="115.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@Images/cowboyRightArm.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="8.0" top="3.5" />
                </GridPane.margin>
             </ImageView>
             <ImageView fx:id="beachBody" fitHeight="36.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -106,6 +130,22 @@
                   <Insets bottom="153.0" left="20.0" />
                </GridPane.margin>
             </ImageView>
+            <ImageView fx:id="cowboyBody" fitHeight="83.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@Images/cowboyBody.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="11.0" left="26.5" top="11.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="cowboyLeftLeg" fitHeight="105.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@Images/cowboyLeftLeg.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="21.0" left="24.0" />
+               </GridPane.margin>
+            </ImageView>
             <ImageView fx:id="beachRightLeg" fitHeight="69.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <image>
                   <Image url="@Images/beachRightLeg.png" />
@@ -114,28 +154,38 @@
                   <Insets bottom="157.0" left="15.0" />
                </GridPane.margin>
             </ImageView>
+            <ImageView fx:id="cowboyRightLeg" fitHeight="105.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@Images/cowboyRightLeg.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="21.5" left="56.0" />
+               </GridPane.margin>
+            </ImageView>
          </children>
       </GridPane>
-      <Label layoutX="438.0" layoutY="202.0" text="Letters Guessed:" textFill="WHITE">
+      <Label layoutX="434.0" layoutY="202.0" text="Letters Guessed:" textFill="WHITE">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <TextField fx:id="letterGuessBox" layoutX="340.0" layoutY="134.0" promptText="Guess letter here" />
+      <TextField fx:id="letterGuessBox" layoutX="330.0" layoutY="134.0" promptText="Guess letter here" />
       <Button fx:id="checkLetter" defaultButton="true" layoutX="534.0" layoutY="134.0" mnemonicParsing="false" onAction="#checkLetterButton" text="Enter" />
-      <Button fx:id="home" layoutX="543.0" layoutY="351.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="50.0" style="-fx-background-color: clear;">
-         <graphic>
-            <ImageView fitHeight="34.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/home.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <RadioButton fx:id="sunnyBeachRadio" layoutX="379.0" layoutY="344.0" mnemonicParsing="false" onAction="#changeBackground" selected="true" style="-fx-background-color: clear;" text="Sunny Beach">
-         <toggleGroup>
-            <ToggleGroup fx:id="backgroundGroup" />
-         </toggleGroup></RadioButton>
-      <RadioButton fx:id="sunsetBeachRadio" layoutX="377.0" layoutY="369.0" mnemonicParsing="false" onAction="#changeBackground" style="-fx-background-color: clear;" text="Sunset Beach" toggleGroup="$backgroundGroup" />
+      <AnchorPane fx:id="themeSelection" layoutX="27.0" layoutY="102.0" prefHeight="172.0" prefWidth="273.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="62.0" layoutY="14.0" prefHeight="27.0" prefWidth="149.0" text="Select your theme:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="sunnyBeachRadio" layoutX="92.0" layoutY="61.0" mnemonicParsing="false" onAction="#changeBackground" selected="true" style="-fx-background-color: clear;" text="Beach Theme">
+               <toggleGroup>
+                  <ToggleGroup fx:id="backgroundGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="westernThemeRadio" layoutX="85.0" layoutY="98.0" mnemonicParsing="false" onAction="#changeBackground" style="-fx-background-color: clear;" text="Western Theme" toggleGroup="$backgroundGroup" />
+            <Label layoutX="20.0" layoutY="140.0" prefHeight="25.0" prefWidth="235.0" text="Game begins after entering your first guess" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
