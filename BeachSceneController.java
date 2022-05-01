@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 
@@ -21,7 +22,7 @@ public class BeachSceneController {
     
    private static final ArrayList<Character> guessedLettersArray = new ArrayList<>(); // list of the letters the user already guessed
    private static char firstLetterInGuess; // the user's inputted guess
-   private static String currentWord;  // randomly picked word
+   private static String currentWord = "hello";  // randomly picked word
    private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
    private static int correctGuesses = 0;
    
@@ -48,22 +49,42 @@ public class BeachSceneController {
     
    @FXML
     private ImageView sunnyBeachPicture;
-    
+   
+   //------------------------------------CHANGED TO WESTERNPICTURE 
    @FXML
-    private ImageView sunsetBeachPicture;
+    private ImageView westernPicture;
+    
+    @FXML
+    private ImageView cowboyBody;
+
+    @FXML
+    private ImageView cowboyHead;
+
+    @FXML
+    private ImageView cowboyLeftArm;
+
+    @FXML
+    private ImageView cowboyLeftLeg;
+
+    @FXML
+    private ImageView cowboyRightArm;
+
+    @FXML
+    private ImageView cowboyRightLeg;
     
    @FXML
     private RadioButton sunnyBeachRadio;
+   
+   //------------------------------------CHANGED TO WESTERNTHEMERADIO 
+   @FXML
+    private RadioButton westernThemeRadio;
     
    @FXML
-    private RadioButton sunsetBeachRadio;
+    private AnchorPane themeSelection;
     
    @FXML
     private Button checkLetter;
-
-   @FXML
-    private Button home;
-
+   //------------------------------------REMOVED HOME BUTTON
    @FXML
     private TextField letter1;
 
@@ -88,30 +109,44 @@ public class BeachSceneController {
    @FXML
     private Button resetWord;
     
-    // Changes the background determined but what radio button was pressed
+    // Changes the theme determined by what radio button was pressed
    @FXML
     void changeBackground(ActionEvent event) {
-      if(event.getSource() == sunsetBeachRadio){
-         sunsetBeachPicture.setVisible(true);
+      //----------------------------------------------CHANGED TO WESTERN   
+      if(event.getSource() == westernThemeRadio){
+         westernPicture.setVisible(true);
+         sunnyBeachPicture.setVisible(false);
       }
       if(event.getSource() == sunnyBeachRadio){
-         sunsetBeachPicture.setVisible(false);
+      //---------------------------------------------CHANGED TO WESTERN
+         westernPicture.setVisible(false);
+         sunnyBeachPicture.setVisible(true);
       }
     }
     
    @FXML
     void checkLetterButton(ActionEvent event) {
-      // checks if the first letter in the guess letter text box is a valid letter and then places an uppercase value into the guessedLettersArray if that letter isn't already there
+      // checks if the first letter in the guess letter text box is a valid letter
+      // and then places an uppercase value into the guessedLettersArray if that letter isn't already there
+//        while (letterGuessBox.getText().length() != 1)
+//        {
+//            letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 3;");
+//            letterGuessBox.setPromptText("Enter single letters only");
+//        }
+
       firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
+      // hides radio buttons to keep preference on
+      themeSelection.setVisible(false);
       
       if(isALetter(firstLetterInGuess))
       {
          isTheLetterGuessCorrect();
          amountOfCorrect(currentWord, firstLetterInGuess);
-         buildHangmanCharcter();
+         buildHangmanCharacter();
       }
       else
          System.out.println("Enter a letter!");
+
       System.out.println("INCORRECT: " + incorrectGuesses +" CORRECT: " + correctGuesses);
       winOrLoseMessage();
       letterGuessBox.clear();
@@ -122,12 +157,13 @@ public class BeachSceneController {
       updateWord();
       resetGame();
    }
-    
+   
     /**
       Determines if the user's char variable is a letter.
       @param c is the char being tested.
       @return false if the char is not a letter and true if only letters.
    */
+   
    public static boolean isALetter(char c)
    {
       // char guess = c.toUpperCase();
@@ -191,6 +227,18 @@ public class BeachSceneController {
          letter3.setStyle("-fx-background-color: lightcoral;");
          letter4.setStyle("-fx-background-color: lightcoral;");
          letter5.setStyle("-fx-background-color: lightcoral;");
+         //---------------------------------------------------------ADDED
+         if (letter1.getText().isEmpty())
+            letter1.setText(currentWord.substring(0, 1).toUpperCase());
+         if (letter2.getText().isEmpty())
+            letter2.setText(currentWord.substring(1, 2).toUpperCase());
+         if (letter3.getText().isEmpty())
+            letter3.setText(currentWord.substring(2, 3).toUpperCase());
+         if (letter4.getText().isEmpty())
+            letter4.setText(currentWord.substring(3, 4).toUpperCase());
+         if (letter5.getText().isEmpty())
+            letter5.setText(currentWord.substring(4).toUpperCase());
+         //---------------------------------------------------------ADDED
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
       }
@@ -215,9 +263,7 @@ public class BeachSceneController {
             .build();
          HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
          String data = response.body();
-      
-         
-                    
+
          Gson gson = new Gson();
          String[] word = gson.fromJson(data, String[].class);
       
@@ -238,12 +284,24 @@ public class BeachSceneController {
       guessedLettersArray.clear();
       lettersGuessedList.clear();
       // reset person
-      beachHead.setVisible(false);
-      beachBody.setVisible(false);
-      beachLeftArm.setVisible(false);
-      beachRightArm.setVisible(false);
-      beachLeftLeg.setVisible(false);
-      beachRightLeg.setVisible(false);
+      if(sunnyBeachPicture.isVisible())
+      {
+         beachHead.setVisible(false);
+         beachBody.setVisible(false);
+         beachLeftArm.setVisible(false);
+         beachRightArm.setVisible(false);
+         beachLeftLeg.setVisible(false);
+         beachRightLeg.setVisible(false);
+      }
+      else if(westernPicture.isVisible())
+      {
+         cowboyHead.setVisible(false);
+         cowboyBody.setVisible(false);
+         cowboyLeftArm.setVisible(false);
+         cowboyRightArm.setVisible(false);
+         cowboyLeftLeg.setVisible(false);
+         cowboyRightLeg.setVisible(false);
+      }
       // reset background colors to white
       letter1.setStyle("-fx-background-color: white;");
       letter2.setStyle("-fx-background-color: white;");
@@ -256,23 +314,42 @@ public class BeachSceneController {
       // re-enable access to guessing box
       checkLetter.setDisable(false);
       letterGuessBox.setDisable(false);
+      // re-enable access to theme
+      themeSelection.setVisible(true);
    }
    
-   public void buildHangmanCharcter()
+   public void buildHangmanCharacter()
    {
-      if(incorrectGuesses==1)
-         beachHead.setVisible(true);
-      else if(incorrectGuesses==2)
-         beachBody.setVisible(true);
-      else if(incorrectGuesses==3)
-         beachLeftArm.setVisible(true);
-      else if(incorrectGuesses==4)
-         beachRightArm.setVisible(true);
-      else if(incorrectGuesses==5)
-         beachLeftLeg.setVisible(true);
-      else if(incorrectGuesses==6)
-         beachRightLeg.setVisible(true);
-      
+      if(sunnyBeachPicture.isVisible())
+      {
+         if(incorrectGuesses==1)
+            beachHead.setVisible(true);
+         else if(incorrectGuesses==2)
+            beachBody.setVisible(true);
+         else if(incorrectGuesses==3)
+            beachLeftArm.setVisible(true);
+         else if(incorrectGuesses==4)
+            beachRightArm.setVisible(true);
+         else if(incorrectGuesses==5)
+            beachLeftLeg.setVisible(true);
+         else if(incorrectGuesses==6)
+            beachRightLeg.setVisible(true);
+      }
+      if(westernPicture.isVisible())
+      {
+         if(incorrectGuesses==1)
+            cowboyHead.setVisible(true);
+         else if(incorrectGuesses==2)
+            cowboyBody.setVisible(true);
+         else if(incorrectGuesses==3)
+            cowboyLeftArm.setVisible(true);
+         else if(incorrectGuesses==4)
+            cowboyRightArm.setVisible(true);
+         else if(incorrectGuesses==5)
+            cowboyLeftLeg.setVisible(true);
+         else if(incorrectGuesses==6)
+            cowboyRightLeg.setVisible(true);
+      }
    }
    // does this method before the main method is started 
    public void initialize() { 
