@@ -1,213 +1,249 @@
+// API imports
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
 import com.google.gson.Gson;
-// Scene Builder
+
+// Scene Builder imports
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 
+// Method imports
 import java.util.ArrayList;
+import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import java.lang.*;
 
-public class BeachSceneController {
-    
-   private static final ArrayList<Character> guessedLettersArray = new ArrayList<>(); // list of the letters the user already guessed
-   private static char firstLetterInGuess; // the user's inputted guess
-   private static String currentWord = "hello";  // randomly picked word
-   private static int incorrectGuesses = 0;  // keeps the amount of times an incorrect letter was guessed
+public class BeachSceneController implements Initializable
+{
+   // Variables----------------------------------------------------------------------------------------------   
+
+   // Referenced from the FXML file
+   @FXML
+   private ImageView beachBody;
+   @FXML
+   private ImageView beachHead;
+   @FXML
+   private ImageView beachLeftArm;
+   @FXML
+   private ImageView beachLeftLeg;
+   @FXML
+   private ImageView beachRightArm;
+   @FXML
+   private ImageView beachRightLeg;
+   @FXML
+   private ImageView sunnyBeachPicture;
+   @FXML
+   private Label invalidMessage;
+   @FXML
+   private ImageView westernPicture;
+   @FXML
+   private ImageView cowboyBody;
+   @FXML
+   private ImageView cowboyHead;
+   @FXML
+   private ImageView cowboyLeftArm;
+   @FXML
+   private ImageView cowboyLeftLeg;
+   @FXML
+   private ImageView cowboyRightArm;
+   @FXML
+   private ImageView cowboyRightLeg;
+   @FXML
+   private RadioButton sunnyBeachRadio;
+   @FXML
+   private RadioButton westernThemeRadio; 
+   @FXML
+   private AnchorPane themeSelection; 
+   @FXML
+   private Button checkLetter;
+   @FXML
+   private TextField letter1;
+   @FXML
+   private TextField letter2;
+   @FXML
+   private TextField letter3;
+   @FXML
+   private TextField letter4;
+   @FXML
+   private TextField letter5;
+   @FXML
+   private TextField letterGuessBox;
+   @FXML
+   private TextArea lettersGuessedList;
+   @FXML
+   private Button resetWord;
+
+   // Referenced internally, not from FXML file
+   
+   // List of the letters the user already guesses
+   private static final ArrayList<Character> guessedLettersArray = new ArrayList<>();
+   
+   // The user's inputted guess
+   private static char firstLetterInGuess;
+   
+   // The current word to be guessed
+   private static String currentWord;
+   
+   // Incorrect guesses
+   private static int incorrectGuesses = 0;
+   
+   // Correct guesses
    private static int correctGuesses = 0;
    
-   @FXML
-    private ToggleGroup backgroundGroup;
-     
-   @FXML
-    private ImageView beachBody;
-
-   @FXML
-    private ImageView beachHead;
-
-   @FXML
-    private ImageView beachLeftArm;
-
-   @FXML
-    private ImageView beachLeftLeg;
-
-   @FXML
-    private ImageView beachRightArm;
-
-   @FXML
-    private ImageView beachRightLeg;
-    
-   @FXML
-    private ImageView sunnyBeachPicture;
+   // Theme to be used for game
+   private enum Theme { BEACH, WESTERN };
+   private Theme theme;
    
-   //------------------------------------CHANGED TO WESTERNPICTURE 
-   @FXML
-    private ImageView westernPicture;
-    
-    @FXML
-    private ImageView cowboyBody;
-
-    @FXML
-    private ImageView cowboyHead;
-
-    @FXML
-    private ImageView cowboyLeftArm;
-
-    @FXML
-    private ImageView cowboyLeftLeg;
-
-    @FXML
-    private ImageView cowboyRightArm;
-
-    @FXML
-    private ImageView cowboyRightLeg;
-    
-   @FXML
-    private RadioButton sunnyBeachRadio;
+   // Key to persist the theme in preferences
+   public static final String SCENE_THEME = "scene_theme_key";
    
-   //------------------------------------CHANGED TO WESTERNTHEMERADIO 
+   // FXML Action Events------------------------------------------------------------------------------------- 
+       
+   // Determines and applies the theme & theme preference by which radio button was pressed
    @FXML
-    private RadioButton westernThemeRadio;
-    
+   void themeRadioSelection(ActionEvent event)
+   { 
+      // Assigns the selected radio button to the corresponding theme
+      if(event.getSource() == westernThemeRadio)
+         this.theme = Theme.WESTERN;
+      else if(event.getSource() == sunnyBeachRadio)
+         this.theme = Theme.BEACH;
+         
+      // Saves theme preference to key
+      Preferences p = Preferences.userNodeForPackage(BeachSceneController.class);
+      p.put(SCENE_THEME, this.theme.toString());
+      
+      updateTheme();
+   }
+   
+   // checks if the first letter in the guess letter text box is a valid letter
+   // and then places an uppercase value into the guessedLettersArray if that letter isn't already there
    @FXML
-    private AnchorPane themeSelection;
-    
-   @FXML
-    private Button checkLetter;
-   //------------------------------------REMOVED HOME BUTTON
-   @FXML
-    private TextField letter1;
-
-   @FXML
-    private TextField letter2;
-
-   @FXML
-    private TextField letter3;
-
-   @FXML
-    private TextField letter4;
-
-   @FXML
-    private TextField letter5;
-
-   @FXML
-    private TextField letterGuessBox;
-
-   @FXML
-    private TextArea lettersGuessedList;
-
-   @FXML
-    private Button resetWord;
-    
-    // Changes the theme determined by what radio button was pressed
-   @FXML
-    void changeBackground(ActionEvent event) {
-      //----------------------------------------------CHANGED TO WESTERN   
-      if(event.getSource() == westernThemeRadio){
-         westernPicture.setVisible(true);
-         sunnyBeachPicture.setVisible(false);
-      }
-      if(event.getSource() == sunnyBeachRadio){
-      //---------------------------------------------CHANGED TO WESTERN
-         westernPicture.setVisible(false);
-         sunnyBeachPicture.setVisible(true);
-      }
-    }
-    
-   @FXML
-    void checkLetterButton(ActionEvent event) {
-      // checks if the first letter in the guess letter text box is a valid letter
-      // and then places an uppercase value into the guessedLettersArray if that letter isn't already there
-//        while (letterGuessBox.getText().length() != 1)
-//        {
-//            letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 3;");
-//            letterGuessBox.setPromptText("Enter single letters only");
-//        }
-
-
-
-      firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
-      // hides radio buttons to keep preference on
+   void checkLetterButton(ActionEvent event)
+   {
+      // Hide theme selection box
       themeSelection.setVisible(false);
       
-      if(isALetter(firstLetterInGuess) && isLetterAlreadyGuessed() == true)   // is the letter guessed a letter and is it a letter not already guessed
+      // Remove any lingering invalid input styles and hide invalid input message
+      letterGuessBox.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
+      invalidMessage.setVisible(false);
+      
+      // Set only the first letter in the guess box as a char so it can be passed through isALetter() method
+      firstLetterInGuess = letterGuessBox.getText().charAt(0);
+
+      // Check if the input is a letter and if it's already been guessed
+      if(isALetter(firstLetterInGuess) && isLetterAlreadyGuessed() == true)
       {
          isTheLetterGuessCorrect();
          amountOfCorrect(currentWord, firstLetterInGuess);
          buildHangmanCharacter();
       }
       else
+      {
+         // Show invalid input styles and message
          System.out.println("Enter a letter!");
-
+         letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+         invalidMessage.setVisible(true);
+      }
+      
       System.out.println("INCORRECT: " + incorrectGuesses +" CORRECT: " + correctGuesses);
+      
+      // Check whether the game is completed
       winOrLoseMessage();
+      
+      // Clear the input textfield
       letterGuessBox.clear();
    }
 
+   // Changes the word and resets the game
    @FXML
-    void resetWordButton(ActionEvent event) {
+   void resetWordButton(ActionEvent event)
+   {
       updateWord();
       resetGame();
    }
    
-    /**
-      Determines if the user's char variable is a letter.
-      @param c is the char being tested.
+   // Methods------------------------------------------------------------------------------------------------
+   
+   // Checks the current theme, sets the corresponding background, and hides the other background
+   public void updateTheme()
+   {
+      if(this.theme == Theme.WESTERN)
+      {
+         westernPicture.setVisible(true);
+         sunnyBeachPicture.setVisible(false);
+      }
+      
+      if(this.theme == Theme.BEACH)
+      {
+         westernPicture.setVisible(false);
+         sunnyBeachPicture.setVisible(true);
+      }
+   }
+   
+   /**
+      Determines if the user's char variable is a letter
+      @param c The char being tested
       @return false if the char is not a letter
-      @return true if only letters
+      @return true if the char is a letter
    */
    public static boolean isALetter(char c)
    {
-      // char guess = c.toUpperCase();
+      // Accept lowercase and uppercase chars
       return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
    }
    
    /**
-      Determines if the user entered the same letter more than once.
-      @return false if the char is not a letter already guessed.
-      @return true if the char is a letter already guessed.
+      Determines if the user entered the same letter more than once
+      @return false if the char is not a letter already guessed
+      @return true if the char is a letter already guessed
    */
-   public static boolean isLetterAlreadyGuessed(){
-      if(guessedLettersArray.contains(firstLetterInGuess)){
-         System.out.println("Letter Already Guessed, Try Again!");
+   public static boolean isLetterAlreadyGuessed()
+   {
+      if(guessedLettersArray.contains(firstLetterInGuess))
+      {
          return false;  
       }
       else
          return true;
    }
    
+   // Adds guessed letters to an array so user can keep track of guesses 
    public void addLetterToListOfAlreadyGuessed()
    {
-      // Adds letters to guess box
-      if(!guessedLettersArray.contains(firstLetterInGuess)){
+      // Adds letters to array if user hasn't guessed it yet
+      if(!guessedLettersArray.contains(firstLetterInGuess))
+      {
          guessedLettersArray.add(firstLetterInGuess);
       }
+      
+      // Create a string from the array and display on scene
       String list = guessedLettersArray.toString().toUpperCase();
       lettersGuessedList.setText(list);
    }
    
-   // if word contains letter guessed fill it in aproprate letter box
-   // if word doesn't contain the letter guessed +1 incorrect guesses
-   // if the array of already guessed contains letter -1 incorrect guesses
+   // Checks if the user's letter guess is correct
    public void isTheLetterGuessCorrect()
    {
       String shc = guessedLettersArray.toString();
-      // letter not in word and not in already guessed list so add 1 to incorrectGuesses
+      
+      // When the letter is not in the word and not in the already guessed list it will add 1 to incorrectGuesses
       if(!currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess))
       {
          incorrectGuesses++;
       }
-      // letter in word, fills in textfield where the correct letter is located in the word
+      // When the letter is in the word it fills in the textfield where the correct letter is located
       else if(currentWord.contains("" + firstLetterInGuess) && !shc.contains("" + firstLetterInGuess))
       {
          String myLetter = Character.toString(firstLetterInGuess);
@@ -223,27 +259,28 @@ public class BeachSceneController {
          if(currentWord.charAt(4) == firstLetterInGuess)
             letter5.setText(myLetter.toUpperCase());
       }
-      // letter already guessed
       else
-         System.out.println("Letter Already Guessed Try Again");
+         System.out.println("Letter Already Guessed. Try Again.");
          
       addLetterToListOfAlreadyGuessed();
    }
    
    /**
-      Prints out a win statement when all parts in the theWord arraylist don't equal '_' meaning all letters have been guessed.
-      Prints out a loss statement if the user guesses incorrectly six or more times (equal to TRIESGIVEN)
+      Checks if the user has completed the game and applies corresponding styles
    */
    public void winOrLoseMessage()
    {
       if(incorrectGuesses == 6)
       {
+         // Letters guessed incorrectly will have a red background
          letter1.setStyle("-fx-background-color: lightcoral;");
          letter2.setStyle("-fx-background-color: lightcoral;");
          letter3.setStyle("-fx-background-color: lightcoral;");
          letter4.setStyle("-fx-background-color: lightcoral;");
          letter5.setStyle("-fx-background-color: lightcoral;");
-         //---------------------------------------------------------ADDED
+
+         // Show correct letters in textfields
+         // Letters guessed correctly will have a green background
          if (letter1.getText().isEmpty() == false)
             letter1.setStyle("-fx-background-color: lightgreen;");
          else
@@ -268,53 +305,73 @@ public class BeachSceneController {
             letter5.setStyle("-fx-background-color: lightgreen;");
          else
             letter5.setText(currentWord.substring(4).toUpperCase());
-            
-         //---------------------------------------------------------ADDED
+         
+         // Do not allow user to enter any further guesses   
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
       }
+      
+      
       if(correctGuesses == currentWord.length())
       {
+         // Letters guessed correctly will have a green background
          letter1.setStyle("-fx-background-color: lightgreen;");
          letter2.setStyle("-fx-background-color: lightgreen;");
          letter3.setStyle("-fx-background-color: lightgreen;");
          letter4.setStyle("-fx-background-color: lightgreen;");
          letter5.setStyle("-fx-background-color: lightgreen;");
+         
+         // Do not allow user to enter any further guesses
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
       }
    }
    
-   public void updateWord(){
+   // Calls the API to receive a new random five letter word to be guessed
+   public void updateWord()
+   {
       System.out.println("LOADING... Please Wait.");
-      try{
+      
+      // Call the API
+      try
+      {
          HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create("https://random-word-api.herokuapp.com/word?length=5"))
             .method("GET", HttpRequest.BodyPublishers.noBody())
             .build();
          HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+         
+         // Create a String to hold API response
          String data = response.body();
 
+         // Parse the data to GSON
          Gson gson = new Gson();
          String[] word = gson.fromJson(data, String[].class);
       
+         // Set the parsed data as the current word to be guessed
          RandomWord randomWord = new RandomWord(word);
          currentWord = randomWord.getWord();
-      }catch(Exception e){}
+      }
+      catch(Exception e){}
+      
       System.out.println(currentWord);
    }
    
-   public void resetGame(){
-      // reset letter boxes
+   // Clears out previous game and gives user option to change theme for next game
+   public void resetGame()
+   {
+      // Clear letter textfields
       letter1.clear();
       letter2.clear();
       letter3.clear();
       letter4.clear();
       letter5.clear();
-      // reset list of already guessed letters
+      
+      // Clear the list of already guessed letters
       guessedLettersArray.clear();
       lettersGuessedList.clear();
-      // reset person
+      
+      // Hide corresponding hangman bodyparts
       if(sunnyBeachPicture.isVisible())
       {
          beachHead.setVisible(false);
@@ -333,24 +390,33 @@ public class BeachSceneController {
          cowboyLeftLeg.setVisible(false);
          cowboyRightLeg.setVisible(false);
       }
-      // reset background colors to white
+      
+      // Reset background color of textfields to white
       letter1.setStyle("-fx-background-color: white;");
       letter2.setStyle("-fx-background-color: white;");
       letter3.setStyle("-fx-background-color: white;");
       letter4.setStyle("-fx-background-color: white;");
       letter5.setStyle("-fx-background-color: white;");
+      
       // reset correct and incorrect variables
       incorrectGuesses = 0;
       correctGuesses = 0;
-      // re-enable access to guessing box
+      
+      // Re-enable access to guessing box
       checkLetter.setDisable(false);
       letterGuessBox.setDisable(false);
-      // re-enable access to theme
+      
+      // Re-enable access to theme selection
       themeSelection.setVisible(true);
+      
+      // Remove any lingering invalid input styles
+      letterGuessBox.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
    }
    
+   // Builds the hangman character one body part at a time
    public void buildHangmanCharacter()
    {
+      // Uses the surfer body parts when the beach theme is shown
       if(sunnyBeachPicture.isVisible())
       {
          if(incorrectGuesses==1)
@@ -366,6 +432,8 @@ public class BeachSceneController {
          else if(incorrectGuesses==6)
             beachRightLeg.setVisible(true);
       }
+      
+      // Uses the cowboy body parts when the western theme is shown
       if(westernPicture.isVisible())
       {
          if(incorrectGuesses==1)
@@ -382,26 +450,34 @@ public class BeachSceneController {
             cowboyRightLeg.setVisible(true);
       }
    }
-   // does this method before the main method is started 
-   public void initialize() { 
-      //updateWord();
-      // CODE SHOULD NOT ALLOW THE TEXTFIELD TO BE ENTERED IF NOTHING INSIDE
-   //       if(!letterGuessBox.getText().isEmpty()) 
-   //       {
-   //          // disable button to be pressed
-   //          checkLetter.setDisable(true);
-   //       }
-   //       else // enable button
-   //          checkLetter.setDisable(false);
-   }
    
-   public void amountOfCorrect(String s, char c) {
-      //initialize count array index  
-      for (int i = 0; i < s.length(); i++){
+   // Determines the amount of correct guesses the user has made
+   public void amountOfCorrect(String s, char c)
+   {
+      // Increment correct guesses by one when the guessed letter appears in the word  
+      for (int i = 0; i < s.length(); i++)
+      {
          if(s.charAt(i) == c)
             correctGuesses++;
       }
    }
    
-   
+   // Implement Initializable interface----------------------------------------------------------------------
+   @Override
+   public void initialize(URL location, ResourceBundle resources)
+   { 
+      // Determines which theme to use from preferences 
+      Preferences p = Preferences.userNodeForPackage(BeachSceneController.class);
+      this.theme = Theme.valueOf(p.get(SCENE_THEME, Theme.BEACH.toString()));
+      
+      // Selects the corresponding theme's radio button
+      if(this.theme == Theme.WESTERN)
+         this.westernThemeRadio.setSelected(true);
+      else
+         this.sunnyBeachRadio.setSelected(true);
+         
+      // Sets the first word for the game
+      updateWord();
+      updateTheme();
+   }
 }
