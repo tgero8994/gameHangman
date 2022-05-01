@@ -178,12 +178,12 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <RadioButton fx:id="sunnyBeachRadio" layoutX="92.0" layoutY="61.0" mnemonicParsing="false" onAction="#changeBackground" selected="true" style="-fx-background-color: clear;" text="Beach Theme">
+            <RadioButton fx:id="sunnyBeachRadio" layoutX="92.0" layoutY="61.0" mnemonicParsing="false" onAction="#changeBackground" selected="true" text="Beach Theme">
                <toggleGroup>
                   <ToggleGroup fx:id="backgroundGroup" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="westernThemeRadio" layoutX="85.0" layoutY="98.0" mnemonicParsing="false" onAction="#changeBackground" style="-fx-background-color: clear;" text="Western Theme" toggleGroup="$backgroundGroup" />
+            <RadioButton fx:id="westernThemeRadio" layoutX="85.0" layoutY="98.0" mnemonicParsing="false" onAction="#changeBackground" text="Western Theme" toggleGroup="$backgroundGroup" />
             <Label layoutX="20.0" layoutY="140.0" prefHeight="25.0" prefWidth="235.0" text="Game begins after entering your first guess" />
          </children>
       </AnchorPane>

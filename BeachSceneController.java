@@ -134,11 +134,13 @@ public class BeachSceneController {
 //            letterGuessBox.setPromptText("Enter single letters only");
 //        }
 
+
+
       firstLetterInGuess = letterGuessBox.getText().charAt(0); // sets only the first letter in the guess box as a char so it can be passed through isALetter() method
       // hides radio buttons to keep preference on
       themeSelection.setVisible(false);
       
-      if(isALetter(firstLetterInGuess))
+      if(isALetter(firstLetterInGuess) && isLetterAlreadyGuessed() == true)   // is the letter guessed a letter and is it a letter not already guessed
       {
          isTheLetterGuessCorrect();
          amountOfCorrect(currentWord, firstLetterInGuess);
@@ -161,13 +163,27 @@ public class BeachSceneController {
     /**
       Determines if the user's char variable is a letter.
       @param c is the char being tested.
-      @return false if the char is not a letter and true if only letters.
+      @return false if the char is not a letter
+      @return true if only letters
    */
-   
    public static boolean isALetter(char c)
    {
       // char guess = c.toUpperCase();
       return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
+   }
+   
+   /**
+      Determines if the user entered the same letter more than once.
+      @return false if the char is not a letter already guessed.
+      @return true if the char is a letter already guessed.
+   */
+   public static boolean isLetterAlreadyGuessed(){
+      if(guessedLettersArray.contains(firstLetterInGuess)){
+         System.out.println("Letter Already Guessed, Try Again!");
+         return false;  
+      }
+      else
+         return true;
    }
    
    public void addLetterToListOfAlreadyGuessed()
@@ -228,16 +244,31 @@ public class BeachSceneController {
          letter4.setStyle("-fx-background-color: lightcoral;");
          letter5.setStyle("-fx-background-color: lightcoral;");
          //---------------------------------------------------------ADDED
-         if (letter1.getText().isEmpty())
+         if (letter1.getText().isEmpty() == false)
+            letter1.setStyle("-fx-background-color: lightgreen;");
+         else
             letter1.setText(currentWord.substring(0, 1).toUpperCase());
-         if (letter2.getText().isEmpty())
+            
+         if (letter2.getText().isEmpty() ==  false)
+            letter2.setStyle("-fx-background-color: lightgreen;");
+         else
             letter2.setText(currentWord.substring(1, 2).toUpperCase());
-         if (letter3.getText().isEmpty())
+            
+         if (letter3.getText().isEmpty() == false)
+            letter3.setStyle("-fx-background-color: lightgreen;");
+         else
             letter3.setText(currentWord.substring(2, 3).toUpperCase());
-         if (letter4.getText().isEmpty())
+            
+         if (letter4.getText().isEmpty() == false)
+            letter4.setStyle("-fx-background-color: lightgreen;");
+         else
             letter4.setText(currentWord.substring(3, 4).toUpperCase());
-         if (letter5.getText().isEmpty())
+            
+         if (letter5.getText().isEmpty() == false)
+            letter5.setStyle("-fx-background-color: lightgreen;");
+         else
             letter5.setText(currentWord.substring(4).toUpperCase());
+            
          //---------------------------------------------------------ADDED
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
