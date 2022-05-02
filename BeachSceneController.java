@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font; 
 
 // Method imports
 import java.util.ArrayList;
@@ -139,22 +140,37 @@ public class BeachSceneController implements Initializable
       letterGuessBox.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
       invalidMessage.setVisible(false);
       
-      // Set only the first letter in the guess box as a char so it can be passed through isALetter() method
-      firstLetterInGuess = letterGuessBox.getText().charAt(0);
-
-      // Check if the input is a letter and if it's already been guessed
-      if(isALetter(firstLetterInGuess) && isLetterAlreadyGuessed() == true)
+      try // catches error when nothing is entered in the letterGuessBox text field
       {
-         isTheLetterGuessCorrect();
-         amountOfCorrect(currentWord, firstLetterInGuess);
-         buildHangmanCharacter();
-      }
-      else
-      {
-         // Show invalid input styles and message
-         System.out.println("Enter a letter!");
-         letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-         invalidMessage.setVisible(true);
+         // Set only the first letter in the guess box as a char so it can be passed through isALetter() method
+         firstLetterInGuess = letterGuessBox.getText().charAt(0);
+         // Check if the input is a letter and if it's already been guessed
+         if(isALetter(firstLetterInGuess) && isLetterAlreadyGuessed() == false)
+         {
+            isTheLetterGuessCorrect();
+            amountOfCorrect(currentWord, firstLetterInGuess);
+            buildHangmanCharacter();
+         }
+         // Show invalidMessage with "Already Guessed" message when a letter already guessed is entered
+         else if(isLetterAlreadyGuessed() == true)
+         {
+            System.out.println("Letter Already Guessed!");
+            letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            invalidMessage.setText("Aleady Guessed!");
+            invalidMessage.setFont(new Font("Regular", 10));
+            invalidMessage.setVisible(true);
+         }
+         // Show invalidMessage with "Invalid input" message when anything but a letter is entered
+         else
+         {
+            System.out.println("Enter a letter!");
+            letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            invalidMessage.setText("Invalid Input!");
+            invalidMessage.setFont(new Font("Regular", 12));
+            invalidMessage.setVisible(true);
+         }
+      } catch(Exception StringIndexOutOfBoundsException) {
+         System.out.println("ERROR! Must Enter a Letter Value.");
       }
       
       System.out.println("INCORRECT: " + incorrectGuesses +" CORRECT: " + correctGuesses);
@@ -166,7 +182,7 @@ public class BeachSceneController implements Initializable
       letterGuessBox.clear();
    }
 
-   // Changes the word and resets the game
+   // Calls an API to generate a new word and resets the game
    @FXML
    void resetWordButton(ActionEvent event)
    {
@@ -206,20 +222,22 @@ public class BeachSceneController implements Initializable
    
    /**
       Determines if the user entered the same letter more than once
-      @return false if the char is not a letter already guessed
-      @return true if the char is a letter already guessed
+      @return false if the char isn't already guessed
+      @return true if the char is already guessed
    */
    public static boolean isLetterAlreadyGuessed()
    {
       if(guessedLettersArray.contains(firstLetterInGuess))
       {
-         return false;  
+         return true;  
       }
       else
-         return true;
+         return false;
    }
    
-   // Adds guessed letters to an array so user can keep track of guesses 
+   /**
+      Adds guessed letters to an array if the letter wasn't already guessed
+   */
    public void addLetterToListOfAlreadyGuessed()
    {
       // Adds letters to array if user hasn't guessed it yet
@@ -233,9 +251,15 @@ public class BeachSceneController implements Initializable
       lettersGuessedList.setText(list);
    }
    
-   // Checks if the user's letter guess is correct
+   /**
+      Checks if the user's letter guess is contained in the currentWord.
+      If it isn't add a score to incorrectGuesses.
+      If it is replace the corresponding letter textfield.
+      Calls addLetterToListOfAlreadyGuessed()
+   */
    public void isTheLetterGuessCorrect()
    {
+      // string version of the array list guessedLettersArray
       String shc = guessedLettersArray.toString();
       
       // When the letter is not in the word and not in the already guessed list it will add 1 to incorrectGuesses
@@ -259,9 +283,6 @@ public class BeachSceneController implements Initializable
          if(currentWord.charAt(4) == firstLetterInGuess)
             letter5.setText(myLetter.toUpperCase());
       }
-      else
-         System.out.println("Letter Already Guessed. Try Again.");
-         
       addLetterToListOfAlreadyGuessed();
    }
    
@@ -270,17 +291,19 @@ public class BeachSceneController implements Initializable
    */
    public void winOrLoseMessage()
    {
+      // When User LOSES The Game
       if(incorrectGuesses == 6)
       {
-         // Letters guessed incorrectly will have a red background
+         // Letters not guessed will have a red background
          letter1.setStyle("-fx-background-color: lightcoral;");
          letter2.setStyle("-fx-background-color: lightcoral;");
          letter3.setStyle("-fx-background-color: lightcoral;");
          letter4.setStyle("-fx-background-color: lightcoral;");
          letter5.setStyle("-fx-background-color: lightcoral;");
-
-         // Show correct letters in textfields
+      
+         // Fills in the correct letters in letter textfields
          // Letters guessed correctly will have a green background
+         // Sets the letters not guessed when the user loses to the correct letter
          if (letter1.getText().isEmpty() == false)
             letter1.setStyle("-fx-background-color: lightgreen;");
          else
@@ -306,12 +329,12 @@ public class BeachSceneController implements Initializable
          else
             letter5.setText(currentWord.substring(4).toUpperCase());
          
-         // Do not allow user to enter any further guesses   
+         // Do not allow user to enter any further guesses until game is reset
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
       }
       
-      
+      // When User WINS The Game
       if(correctGuesses == currentWord.length())
       {
          // Letters guessed correctly will have a green background
@@ -321,16 +344,18 @@ public class BeachSceneController implements Initializable
          letter4.setStyle("-fx-background-color: lightgreen;");
          letter5.setStyle("-fx-background-color: lightgreen;");
          
-         // Do not allow user to enter any further guesses
+         // Do not allow user to enter any further guesses until game is reset
          checkLetter.setDisable(true);
          letterGuessBox.setDisable(true);
       }
    }
    
-   // Calls the API to receive a new random five letter word to be guessed
+   /**
+      Calls the API to receive a new random five letter word to be guessed
+   */
    public void updateWord()
    {
-      System.out.println("LOADING... Please Wait.");
+      System.out.println("LOADING... Generating New Word Please Wait.");
       
       // Call the API
       try
@@ -343,7 +368,7 @@ public class BeachSceneController implements Initializable
          
          // Create a String to hold API response
          String data = response.body();
-
+      
          // Parse the data to GSON
          Gson gson = new Gson();
          String[] word = gson.fromJson(data, String[].class);
@@ -357,7 +382,9 @@ public class BeachSceneController implements Initializable
       System.out.println(currentWord);
    }
    
-   // Clears out previous game and gives user option to change theme for next game
+   /**
+      Clears out previous game and gives user option to change theme for next game
+   */
    public void resetGame()
    {
       // Clear letter textfields
@@ -413,7 +440,9 @@ public class BeachSceneController implements Initializable
       letterGuessBox.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
    }
    
-   // Builds the hangman character one body part at a time
+   /**
+      Builds the hangman character one body part at a time depending on the amount of incorrectGuesses
+   */
    public void buildHangmanCharacter()
    {
       // Uses the surfer body parts when the beach theme is shown
@@ -451,10 +480,12 @@ public class BeachSceneController implements Initializable
       }
    }
    
-   // Determines the amount of correct guesses the user has made
+   /**
+      Determines the amount of correct guesses the user has made
+   */
    public void amountOfCorrect(String s, char c)
    {
-      // Increment correct guesses by one when the guessed letter appears in the word  
+      // Increment correct guesses by one for each time the guessed letter appears in the word  
       for (int i = 0; i < s.length(); i++)
       {
          if(s.charAt(i) == c)
