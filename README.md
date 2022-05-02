@@ -1,4 +1,6 @@
-# gameHangman
- Hangman game:
- User guesses a letter and the code determines if the letter is in the word generated from the five-letter-words.txt file.
- The user can then win the game by guessing all the letters before they guess 6 incorect. (One for each body part)
+# Hangman Game
+   Basic concept user enters in a letter guess and if the letter is in the word it replaces the blank space(s) where the letter(s) appear.
+   If guessed incorrect the hangman character starts to be built beginning with the head with a total of 6 parts.
+
+# Important Files
+* __
