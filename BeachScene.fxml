@@ -187,7 +187,7 @@
             <Label layoutX="20.0" layoutY="140.0" prefHeight="25.0" prefWidth="235.0" text="Game begins after entering your first guess" />
          </children>
       </AnchorPane>
-      <Label fx:id="invalidMessage" layoutX="417.0" layoutY="171.0" prefHeight="34.0" prefWidth="80.0" style="-fx-background-color: lightcoral;" text="Invalid input" visible="false">
+      <Label fx:id="invalidMessage" alignment="CENTER" layoutX="417.0" layoutY="171.0" prefHeight="34.0" prefWidth="92.0" style="-fx-background-color: lightcoral;" text="Invalid input" visible="false">
          <font>
             <Font size="14.0" />
          </font>
