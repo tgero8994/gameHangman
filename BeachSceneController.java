@@ -158,6 +158,7 @@ public class BeachSceneController implements Initializable
             letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             invalidMessage.setText("Aleady Guessed!");
             invalidMessage.setFont(new Font("Regular", 10));
+            invalidMessage.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: lightcoral;");
             invalidMessage.setVisible(true);
          }
          // Show invalidMessage with "Invalid input" message when anything but a letter is entered
@@ -166,7 +167,8 @@ public class BeachSceneController implements Initializable
             System.out.println("Enter a letter!");
             letterGuessBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             invalidMessage.setText("Invalid Input!");
-            invalidMessage.setFont(new Font("Regular", 12));
+            invalidMessage.setFont(new Font("Regular", 10));
+            invalidMessage.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: lightcoral;");
             invalidMessage.setVisible(true);
          }
       } catch(Exception StringIndexOutOfBoundsException) {
